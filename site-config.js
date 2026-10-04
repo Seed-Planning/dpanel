@@ -12,6 +12,8 @@ window.PANEL_SITE_CONFIG = Object.freeze({
     companyPortal: "",     // Optional: company portal URL.
     expense: "",           // Rakuraku Seisan URL. Blank: use existing company portal.
     screenRequest: "",     // Optional approved request form. Blank: office email.
+    // PDF paths below are reference only. Edit the HTML hrefs for bundled PDFs.
+    // PDF anchors are never rewritten by site.js or converted into mailto links.
     managementManual: "docs/panel-management-manual-v2.0-20260927.pdf",
     operationsManual: "docs/panel-system-operation-manual-v3.0.pdf",
     firstStepGuide: "docs/panel-distribution-first-step-guide-v1.0.pdf",

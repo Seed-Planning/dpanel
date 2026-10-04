@@ -35,6 +35,8 @@
     return "mailto:" + email + "?subject=" + encodeURIComponent(defaultSubject + topic.subject) + "&body=" + encodeURIComponent(topic.body);
   }
   document.querySelectorAll("[data-mail-topic]").forEach((el) => {
+    // Bundled PDFs are plain HTML links and must never become email links.
+    if (el.hasAttribute("data-pdf-link")) return;
     el.href = makeMail(el.dataset.mailTopic);
     el.title = "\u30e1\u30fc\u30eb\u4f5c\u6210\u753b\u9762\u3092\u958b\u304d\u307e\u3059\u3002\u9001\u4fe1\u306f\u30e1\u30fc\u30eb\u30bd\u30d5\u30c8\u3067\u884c\u3063\u3066\u304f\u3060\u3055\u3044\u3002";
   });
@@ -53,7 +55,7 @@
     if (typeof value !== "string" || value.trim() === "" || /[\r\n]/.test(value)) return null;
     // Allow only flat PDF filenames inside docs/ for known document keys.
     // Preserve the relative URL so extracted packages and subdirectory sites both work.
-    if (Object.hasOwn(docs, key) && /^docs\/[A-Za-z0-9][A-Za-z0-9._-]*\.pdf$/.test(value.trim())) return value.trim();
+    if (Object.prototype.hasOwnProperty.call(docs, key) && /^docs\/[A-Za-z0-9][A-Za-z0-9._-]*\.pdf$/.test(value.trim())) return value.trim();
     try {
       const url = new URL(value.trim());
       if (!["https:", "http:"].includes(url.protocol) || url.username || url.password) return null;
@@ -61,6 +63,8 @@
     } catch (_) { return null; }
   }
   document.querySelectorAll("[data-link]").forEach((el) => {
+    // Bundled PDFs are plain HTML links and must never become email links.
+    if (el.hasAttribute("data-pdf-link")) return;
     const key = el.dataset.link;
     const url = approvedURL(links[key], key);
     if (!url) return; // Keep the labelled, working email fallback; never create a dead button.
